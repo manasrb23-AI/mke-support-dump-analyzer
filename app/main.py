@@ -24,11 +24,15 @@ async def index(request: Request):
 async def handle_upload(request: Request, file: UploadFile = File(...)):
     temp_path = await save_and_extract(file)
     try:
+        # Determine real root
+        from app.analyzer.ingest import find_dump_root
+        real_root = find_dump_root(temp_path)
+        
         # Parse
-        parsed_data = await parse_dump(temp_path)
+        parsed_data = await parse_dump(real_root)
         
         # Analyze
-        analysis_result = analyze_bundle(temp_path, parsed_data)
+        analysis_result = analyze_bundle(real_root, parsed_data)
         
         return templates.TemplateResponse("report.html", {
             "request": request,

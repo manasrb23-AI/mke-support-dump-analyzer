@@ -55,12 +55,43 @@ async def save_and_extract(file: UploadFile) -> str:
                         raise HTTPException(status_code=400, detail="Malicious file path detected in archive.")
                 zip_ref.extractall(temp_dir)
             
+        # Debug: list extracted files
+        print(f"DEBUG: Extracted to {temp_dir}")
+        for root, dirs, files in os.walk(temp_dir):
+            for file in files:
+                print(f"DEBUG: Found file: {os.path.join(root, file)}")
+                
         return temp_dir
         
     except Exception as e:
         shutil.rmtree(temp_dir)
         logger.error(f"Extraction failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to process file: {str(e)}")
+
+def find_dump_root(temp_dir: str) -> str:
+    """
+    Locates the actual root of the dump.
+    If the dump contains a single top-level directory, returns that.
+    Otherwise checks for common markers like 'nodes' or 'info.json'.
+    """
+    # 1. Check if we have 'nodes' directly
+    if os.path.exists(os.path.join(temp_dir, "nodes")):
+        return temp_dir
+        
+    # 2. Check if single top-level dir
+    items = os.listdir(temp_dir)
+    if len(items) == 1:
+        single_item = os.path.join(temp_dir, items[0])
+        if os.path.isdir(single_item):
+            # Check if this new root looks promising?
+            # Or just assume it wraps the dump.
+            return single_item
+            
+    # 3. Recursive search for 'nodes' dir? 
+    # Might be too aggressive and pick up unrelated nodes dir.
+    # For now, just stick to the single-folder unwrap pattern which is standard.
+    
+    return temp_dir
 
 def cleanup_temp_dir(path: str):
     if os.path.exists(path) and "mke_analysis_" in path:

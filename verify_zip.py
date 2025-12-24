@@ -4,7 +4,7 @@ import sys
 def verify_zip_upload():
     # Correct port is 8080 as per previous user request
     url = "http://127.0.0.1:8080/upload"
-    files = {'file': open('test_dump.zip', 'rb')}
+    files = {'file': open('test_nested_dump.zip', 'rb')}
     
     try:
         print("Sending upload request...")
