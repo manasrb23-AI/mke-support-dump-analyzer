@@ -15,14 +15,20 @@ Interactive report dashboard
 I verified the application using a synthetic support dump (test_dump.tar.gz) containing known error patterns.
 
 ### Test Case: Disk Pressure Detection
+
 Input: A dummy dump with a kubelet.log containing DiskPressure.
+
 Expected Output: The analysis report should list "Node Disk Pressure" as a critical issue.
+
 Result: SUCCESS. The verification script confirmed that the server processed the upload and returned the correct error analysis.
 Screenshots
+
 (Note: Since I am running in a headless environment, these are descriptions of the views)
 
 Upload Page: A clean, dark-themed interface with a drag-and-drop zone.
+
 Analysis Report: A dashboard showing cluster health score (reduced by errors), a list of critical issues, and node status.
+
 ### How to Run
 Install Dependencies:
 ```sh 
