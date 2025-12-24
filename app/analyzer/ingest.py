@@ -20,8 +20,20 @@ async def save_and_extract(file: UploadFile) -> str:
     """
     verify_file_type(file)
     
-    # Create a temp dir for this analysis session
-    temp_dir = tempfile.mkdtemp(prefix="mke_analysis_")
+    verify_file_type(file)
+    
+    # Use specific user temp directory
+    user_temp = os.environ.get("TEMP", os.path.expanduser("~"))
+    base_dir = os.path.join(user_temp, "mke_analysis")
+    os.makedirs(base_dir, exist_ok=True)
+    
+    # Create a unique dir inside valid temp
+    # We use a timestamp/uuid to avoid collision but keep it under the known folder
+    import uuid
+    import time
+    session_id = f"{int(time.time())}_{uuid.uuid4().hex[:8]}"
+    temp_dir = os.path.join(base_dir, session_id)
+    os.makedirs(temp_dir, exist_ok=True)
     
     # Determine extension for saving
     ext = ".zip" if file.filename.endswith(".zip") else ".tar.gz"
