@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Report - MKE Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .sidebar {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            height: fit-content;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+            border: 1px solid var(--primary);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .issue {
+            padding: 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .issue.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: #f59e0b;
+        }
+
+        .issue-title {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-list strong {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="max-width: 1200px;">
+        <header
+            style="margin-bottom: 1rem; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="logo" style="font-size: 1.5rem;">MKE Analyzer</div>
+            </div>
+            <a href="/" class="btn" style="color: var(--primary); text-decoration: none;">&larr; Upload New</a>
+        </header>
+
+        <div class="dashboard-grid">
+            <aside class="sidebar">
+                <h3>Cluster Metadata</h3>
+                <ul class="meta-list" style="list-style: none; margin-top: 1rem;">
+                    <li><strong>MKE Version:</strong> {{ analysis.metadata.version }}</li>
+                    <li><strong>Nodes:</strong> {{ analysis.metadata.node_count }}</li>
+                    <li><strong>Managers:</strong> {{ analysis.metadata.manager_count }}</li>
+                    <li><strong>Workers:</strong> {{ analysis.metadata.worker_count }}</li>
+                    <li><strong>OS:</strong> {{ analysis.metadata.os_info }}</li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="score-card">
+                    <h3>Cluster Health Score</h3>
+                    <div class="score-value">{{ analysis.score }}/100</div>
+                    <p>{{ analysis.summary }}</p>
+                </div>
+
+                <div class="section-card">
+                    <h3>Root Cause Analysis</h3>
+                    <div style="margin-top: 1.5rem;">
+                        {% for issue in analysis.issues %}
+                        <div class="issue {% if issue.severity == 'warning' %}warning{% endif %}">
+                            <span class="issue-title">{{ issue.title }}</span>
+                            {{ issue.description }}
+                        </div>
+                        {% else %}
+                        <p style="color: var(--success);">No critical issues detected.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>Node Status</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border); text-align: left;">
+                                <th style="padding: 0.5rem;">Hostname</th>
+                                <th style="padding: 0.5rem;">Role</th>
+                                <th style="padding: 0.5rem;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for node in analysis.nodes %}
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem 0.5rem;">{{ node.name }}</td>
+                                <td style="padding: 0.75rem 0.5rem;">{{ node.role }}</td>
+                                <td style="padding: 0.75rem 0.5rem;">
+                                    <span
+                                        style="color: {{ 'var(--success)' if node.status == 'Ready' else '#ef4444' }}">{{
+                                        node.status }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

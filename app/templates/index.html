@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MKE Support Dump Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">MKE Analyzer</div>
+            <p class="subtitle">Mirantis Kubernetes Engine Support Dump Inspector</p>
+        </header>
+
+        <main>
+            <div class="upload-card" id="upload-zone">
+                <div class="icon-zone">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.33241 10 7.6568 10.0294 7.9713 10.0863M12 12V21M12 12L15 15M12 12L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2>Upload Support Dump</h2>
+                <p>Drag & drop your .tar.gz file here, or click to browse</p>
+                <input type="file" id="file-input" accept=".tar.gz,.tgz,.zip" hidden>
+                <div id="progress-bar-container" class="hidden">
+                    <div id="progress-bar"></div>
+                </div>
+                <div id="status-text"></div>
+            </div>
+        </main>
+        
+        <div class="features">
+            <div class="feature-item">
+                <h3>Log Analysis</h3>
+                <p>Parses Kubernetes and Docker logs for common errors.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Root Cause</h3>
+                <p>Heuristics-based engine to identify source problems.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Nodes & Pods</h3>
+                <p>Visual overview of cluster health and status.</p>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
