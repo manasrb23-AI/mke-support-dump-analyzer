@@ -21,7 +21,7 @@ Result: SUCCESS. The verification script confirmed that the server processed the
 Screenshots
 (Note: Since I am running in a headless environment, these are descriptions of the views)
 
-### Upload Page: A clean, dark-themed interface with a drag-and-drop zone.
+Upload Page: A clean, dark-themed interface with a drag-and-drop zone.
 Analysis Report: A dashboard showing cluster health score (reduced by errors), a list of critical issues, and node status.
 ### How to Run
 Install Dependencies:
