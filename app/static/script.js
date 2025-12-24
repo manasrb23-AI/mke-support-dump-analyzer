@@ -33,8 +33,8 @@ fileInput.addEventListener('change', () => {
 });
 
 function handleFile(file) {
-    if (!file.name.endsWith('.tar.gz') && !file.name.endsWith('.tgz')) {
-        alert('Please upload a .tar.gz support dump.');
+    if (!file.name.endsWith('.tar.gz') && !file.name.endsWith('.tgz') && !file.name.endsWith('.zip')) {
+        alert('Please upload a .tar.gz or .zip support dump.');
         return;
     }
 
