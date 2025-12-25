@@ -22,9 +22,10 @@ async def save_and_extract(file: UploadFile) -> str:
     
     verify_file_type(file)
     
-    # Use specific user temp directory
-    user_temp = os.environ.get("TEMP", os.path.expanduser("~"))
-    base_dir = os.path.join(user_temp, "mke_analysis")
+    verify_file_type(file)
+    
+    # Use system temp directory (works on Windows/Linux/Mac)
+    base_dir = os.path.join(tempfile.gettempdir(), "mke_analysis")
     os.makedirs(base_dir, exist_ok=True)
     
     # Create a unique dir inside valid temp
