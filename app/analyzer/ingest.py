@@ -24,8 +24,11 @@ async def save_and_extract(file: UploadFile) -> str:
     
     verify_file_type(file)
     
-    # Use system temp directory (works on Windows/Linux/Mac)
-    base_dir = os.path.join(tempfile.gettempdir(), "mke_analysis")
+    verify_file_type(file)
+    
+    # Use local directory relative to the application for extraction
+    # This assumes the app is run from the root of the project
+    base_dir = os.path.join(os.getcwd(), "extracted_dumps")
     os.makedirs(base_dir, exist_ok=True)
     
     # Create a unique dir inside valid temp
